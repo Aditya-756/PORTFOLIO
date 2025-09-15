@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADITYA SAIN | Front-End Developer</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --primary-color: #00ffff; /* Vibrant Cyan */
+            --secondary-glow-color: #9370db; /* Medium Purple for gradient */
+            --dark-bg: #0a0f1e; /* Deep Space Blue */
+            --card-bg: #10182c; /* Slightly Lighter Blue */
+            --light-text: #e0e0e0;
+            --muted-text: #8892b0;
+            --glow-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--primary-color);
+            --glow-shadow-soft: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            text-shadow: 0 0 3px var(--primary-color);
+        }
+        
+        /* --- NEW: 3D Hero Background Canvas --- */
+        #hero-canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-shadow: var(--glow-shadow);
+            margin-bottom: 40px;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 2px 15px rgba(0, 255, 255, 0.1);
+        }
+        .navbar-brand {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: var(--primary-color) !important;
+            text-shadow: 0 0 8px var(--primary-color);
+        }
+        .nav-link {
+            font-weight: 600;
+            color: var(--light-text) !important;
+            transition: color 0.3s, text-shadow 0.3s;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: var(--primary-color) !important;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 80%;
+        }
+
+        /* --- Neon Button --- */
+        .btn-neon {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-glow-color));
+            background-size: 200% auto;
+            border: none;
+            color: var(--dark-bg);
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        .btn-neon:hover {
+            background-position: right center;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px var(--secondary-glow-color);
+            transform: translateY(-2px);
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        #hero .container {
+            position: relative;
+            z-index: 2;
+        }
+        #hero h1 {
+            font-size: 3.5rem;
+            text-shadow: var(--glow-shadow);
+        }
+        
+        /* --- Skill Icons Section --- */
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: all 0.1s linear;
+            transform-style: preserve-3d;
+        }
+        .skill-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--glow-shadow);
+        }
+        .skill-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            text-shadow: var(--glow-shadow-soft);
+        }
+        .skill-card p {
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--light-text);
+            white-space: nowrap;
+        }
+        
+        /* --- Projects Section (Bento Grid) --- */
+        .main-content {
+            position: relative;
+            z-index: 2;
+            background-color: var(--dark-bg); /* Ensures content below hero has solid bg */
+        }
+        .project-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transform-style: preserve-3d;
+            transition: transform 0.1s linear, box-shadow 0.3s ease, border 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--glow-shadow);
+        }
+        .project-card .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .project-card .tech-tag {
+            background-color: rgba(0,255,255,0.1);
+            color: var(--primary-color);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin: 2px;
+            display: inline-block;
+        }
+        .project-card .project-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 0.9rem;
+            transition: text-shadow 0.3s;
+        }
+        .project-card .project-links a:hover {
+            text-shadow: var(--glow-shadow-soft);
+        }
+        .p-item-1 { grid-column: 1 / 3; grid-row: 1 / 3; }
+        .p-item-2 { grid-column: 3 / 4; grid-row: 1 / 2; }
+        .p-item-3 { grid-column: 4 / 5; grid-row: 1 / 2; }
+        .p-item-4 { grid-column: 3 / 5; grid-row: 2 / 3; }
+
+        /* --- Contact Section --- */
+        .form-control {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: var(--light-text);
+        }
+        .form-control:focus {
+            background-color: var(--card-bg);
+            color: var(--light-text);
+            border-color: var(--primary-color);
+            box-shadow: var(--glow-shadow-soft);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        footer .social-icon {
+            color: var(--light-text);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        footer .social-icon:hover {
+            color: var(--primary-color);
+            text-shadow: var(--glow-shadow);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 992px) {
+            .navbar-brand { font-size: 1rem; }
+            .project-grid { grid-template-columns: repeat(2, 1fr); }
+            .p-item-1, .p-item-2, .p-item-3, .p-item-4 { grid-column: auto; grid-row: auto; }
+        }
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 2.5rem; }
+            .project-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="hero-canvas-container"></div>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">ADITYA SAIN</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#hero">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Creations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h5 class="text-uppercase" style="color: var(--primary-color);">Front-End Developer</h5>
+                    <h1>Building the User-Facing Web.</h1>
+                    <p class="lead my-4" style="max-width: 600px;">I'm [ADITYA SAIN], a developer from Jaipur, India. I create responsive, accessible, and high-performance user interfaces that bring ideas to life on the web.</p>
+                    <a href="#projects" class="btn btn-neon">Explore My Work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="main-content">
+        <section id="skills" class="section-padding">
+            <div class="container">
+                <h2 class="section-title text-center">My Tech Stack</h2>
+                <div class="row g-4 justify-content-center mb-4">
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-html5-plain"></i><p>HTML5</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-css3-plain"></i><p>CSS3</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-javascript-plain"></i><p>JavaScript</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-typescript-plain"></i><p>TypeScript</p></div></div>
+                </div>
+                <div class="row g-4 justify-content-center mb-4">
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-react-original"></i><p>React</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-vuejs-plain"></i><p>Vue.js</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-nextjs-original"></i><p>Next.js</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-tailwindcss-plain"></i><p>Tailwind</p></div></div>
+                </div>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-sass-original"></i><p>Sass</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-git-plain"></i><p>Git</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-figma-plain"></i><p>Figma</p></div></div>
+                    <div class="col-6 col-md-3"><div class="skill-card" data-tilt><i class="devicon-vitejs-plain"></i><p>Vite</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section-padding" style="background-color: var(--card-bg);">
+            <div class="container">
+                <h2 class="section-title text-center">My Digital Creations</h2>
+                <div class="project-grid">
+                    <div class="project-card p-item-1" data-tilt><div class="card-content"><div><h5>E-Commerce Platform UI</h5><p class="text-muted">A complete front-end for an e-commerce site, featuring a custom design system, product pages, and a fully functional shopping cart using Redux for state management.</p></div><div><div class="tech-stack mb-3"><span class="tech-tag">React</span> <span class="tech-tag">Redux Toolkit</span> <span class="tech-tag">SCSS</span> <span class="tech-tag">Stripe API</span></div><div class="project-links"><a href="#" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Live Demo</a><a href="#" target="_blank"><i class="bi bi-github"></i> Source Code</a></div></div></div></div>
+                    <div class="project-card p-item-2" data-tilt><div class="card-content"><div><h5>API Documentation Site</h5><p class="text-muted small">A clean, static site for a public API.</p></div><div><div class="tech-stack mb-3"><span class="tech-tag">Astro</span> <span class="tech-tag">MDX</span></div><div class="project-links"><a href="#" target="_blank"><i class="bi bi-github"></i> Source Code</a></div></div></div></div>
+                    <div class="project-card p-item-3" data-tilt><div class="card-content"><div><h5>JS Color Tool</h5><p class="text-muted small">A browser-based color palette generator.</p></div><div><div class="tech-stack mb-3"><span class="tech-tag">Vanilla JS</span> <span class="tech-tag">Vite</span></div><div class="project-links"><a href="#" target="_blank"><i class="bi bi-github"></i> Source Code</a></div></div></div></div>
+                    <div class="project-card p-item-4" data-tilt><div class="card-content"><div><h5>Real-Time Data Dashboard</h5><p class="text-muted">An analytics dashboard built with Vue.js, featuring interactive charts and real-time data updates from a WebSocket connection.</p></div><div><div class="tech-stack mb-3"><span class="tech-tag">Vue.js</span> <span class="tech-tag">TypeScript</span> <span class="tech-tag">D3.js</span></div><div class="project-links"><a href="#" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Live Demo</a><a href="#" target="_blank"><i class="bi bi-github"></i> Source Code</a></div></div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-padding">
+            <div class="container">
+                <h2 class="section-title text-center">Get In Touch</h2>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3"><input type="text" class="form-control" placeholder="Your Name" required></div>
+                                <div class="col-md-6 mb-3"><input type="email" class="form-control" placeholder="Your Email" required></div>
+                                <div class="col-12 mb-3"><textarea class="form-control" rows="5" placeholder="Your Message" required></textarea></div>
+                                <div class="col-12 text-center"><button type="submit" class="btn btn-neon">Send Message</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="py-4">
+            <div class="container text-center">
+                <div class="mb-3">
+                    <a href="#" class="social-icon"><i class="bi bi-github"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                </div>
+                <p class="mb-0 text-muted">Designed & Built by [Your Name] | Jaipur, India | &copy; 2025</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="importmap">
+        { "imports": { "three": "https://unpkg.com/three@0.163.0/build/three.module.js" } }
+    </script>
+    
+    <script type="module">
+        import * as THREE from 'three';
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('hero-canvas-container').appendChild(renderer.domElement);
+
+        const geometry = new THREE.TorusKnotGeometry(1.2, 0.3, 100, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true }); // Cyan color
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        camera.position.z = 5;
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            torusKnot.rotation.x += 0.001;
+            torusKnot.rotation.y += 0.001;
+            
+            camera.position.x += (mouseX * 1.5 - camera.position.x) * 0.05;
+            camera.position.y += (mouseY * 1.5 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+
+    <script>
+        // --- 3D Tilt Effect for Skill & Project Cards ---
+        const tiltCards = document.querySelectorAll('[data-tilt]');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const width = rect.width;
+                const height = rect.height;
+                const rotateX = (y - height / 2) / (height / 2) * -5;
+                const rotateY = (x - width / 2) / (width / 2) * 5;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            });
+        });
+    </script>
+</body>
+</html>     
